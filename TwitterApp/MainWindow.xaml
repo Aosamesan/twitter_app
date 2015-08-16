@@ -1,0 +1,165 @@
+﻿<Metro:MetroWindow x:Class="TwitterApp.MainWindow"
+                   xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                   xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                   xmlns:Metro="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                   xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                   xmlns:local="clr-namespace:TwitterApp"
+                   xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                   Name="MainWindowName"
+                   Title="RT #"
+                   Width="1024"
+                   Height="600"
+                   Icon="/Iconn.png"
+                   mc:Ignorable="d">
+    <Metro:MetroWindow.Resources>
+        <local:TwitterAuth x:Key="TwitterAuthKey" />
+        <local:TweetCollection x:Key="TweetCollectionKey" />
+        <local:RetweetStatusCollection x:Key="RetweetStatusCollectionKey" />
+        <local:BooleanVisibilityConverter x:Key="BooleanVisibilityConverterKey" />
+        <local:BooleanVisibilityReverseConverter x:Key="BooleanVisibilityReverseConverterKey" />
+    </Metro:MetroWindow.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="1" Visibility="{Binding Source={StaticResource TwitterAuthKey}, Path=IsInit, Converter={StaticResource BooleanVisibilityConverterKey}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="6*" />
+                <ColumnDefinition Width="5*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Margin="10 5"
+                           FontSize="30"
+                           FontWeight="Black"
+                           Foreground="White">
+                    Time Line
+                </TextBlock>
+
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Button Name="RefreshButton"
+                                Grid.Row="1"
+                                Margin="3"
+                                Click="RefreshButton_Click"
+                                FontSize="15"
+                                IsEnabled="{Binding Source={StaticResource TwitterAuthKey},
+                                                    Path=IsInit}">
+                            타임라인 가져오기
+                        </Button>
+                    </Grid>
+                </Grid>
+
+                <ListView Name="TweetListView"
+                          Grid.Row="2"
+                          BorderThickness="0"
+                          ItemContainerStyle="{StaticResource TweetListViewItemStyleKey}"
+                          ItemsSource="{StaticResource TweetCollectionKey}"
+                          MouseDoubleClick="TweetListView_MouseDoubleClick"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          SelectionMode="Single" />
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Margin="5">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackPanel Grid.Column="0" Orientation="Vertical">
+                        <TextBlock FontSize="20" Foreground="{StaticResource AccentColorBrush}">User</TextBlock>
+                        <TextBlock Name="UserNameBlock"
+                                   FontSize="36"
+                                   Foreground="White"
+                                   TextWrapping="WrapWithOverflow" />
+                        <TextBlock Name="ScreenNameBlock"
+                                   HorizontalAlignment="Right"
+                                   FontSize="12"
+                                   Foreground="Gray" />
+                        <ScrollViewer VerticalAlignment="Center" VerticalScrollBarVisibility="Auto">
+                            <TextBlock Name="ProfileDescBlock"
+                                       FontSize="12"
+                                       Foreground="DarkGray"
+                                       TextWrapping="Wrap" />
+                        </ScrollViewer>
+                    </StackPanel>
+
+                    <Image Name="ProfileImage"
+                           Grid.Column="2"
+                           Width="180"
+                           Height="180"
+                           Margin="5"
+                           Source="{Binding Source={StaticResource TwitterAuthKey},
+                                            Path=ProfileImage}" />
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Margin="10 5"
+                                   FontSize="30"
+                                   FontWeight="Black"
+                                   Foreground="White">
+                            Retweet Status
+                        </TextBlock>
+
+                        <TextBlock Name="RetweetCountBlock"
+                                   Grid.Column="1"
+                                   Margin="2 2 10 2"
+                                   HorizontalAlignment="Right"
+                                   VerticalAlignment="Bottom"
+                                   FontSize="17"
+                                   FontWeight="Black"
+                                   Foreground="DarkSeaGreen"
+                                   Text="{Binding ElementName=MainWindowName,
+                                                  Path=SelectedItemRetweetCountString}" />
+                    </Grid>
+
+
+                    <ListView Name="RetweetStatusListView"
+                              Grid.Row="1"
+                              BorderThickness="0"
+                              ItemContainerStyle="{StaticResource RetweetListViewItemStyleKey}"
+                              ItemsSource="{StaticResource RetweetStatusCollectionKey}"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto" />
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Metro:MetroWindow>
