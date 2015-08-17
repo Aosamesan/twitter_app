@@ -185,8 +185,8 @@ namespace TwitterApp
 
         static TwitterAuth()
         {
-            ConsumerKey = "S7KG3AUb88cAeZf8lyZEOphKg";
-            ConsumerSecret = "uTsGfBWze7trpUSAVitZa4Jc5Yjzpa4QTE3U9iNzEh04fWmGVM";
+            ConsumerKey = "ConsumerKey";
+            ConsumerSecret = "ConsumerSecret";
 
             RequestTokenURL = "https://api.twitter.com/oauth/request_token";
             RequestPinURL = "https://api.twitter.com/oauth/authorize?oauth_token=";
